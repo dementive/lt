@@ -1,0 +1,22 @@
+# Enable all the relevant checks and then disable all the ones I don't care about
+# Run with: run-clang-tidy -use-color -config-file ./.clang-tidy -source-filter '.*/test/.*\.cpp' -header-filter '.*/src/.*\.hpp' -p ./test -extra-arg=-std=c++23
+# Add "-fix" to apply fixes automatically.
+Checks: '
+-*,
+clang-analyzer-*,-clang-analyzer-osx*,bugprone-*,concurrency-*,cppcoreguidelines-*,misc-*,modernize-*,performance-*,portability-*,readability-*,
+fuchsia-multiple-inheritance, fuchsia-trailing-return, google-global-names-in-headers, google-runtime-references,
+-modernize-use-trailing-return-type,-modernize-use-nodiscard,-modernize-use-auto,-modernize-macro-to-enum,-modernize-use-std-print,-modernize-avoid-c-arrays,-modernize-deprecated-headers,
+-misc-include-cleaner,-misc-unused-parameters,-misc-non-private-member-variables-in-classes,-misc-use-anonymous-namespace,
+-readability-identifier-length, -readability-braces-around-statements,-readability-else-after-return,-readability-magic-numbers,-readability-simplify-boolean-expr, -readability-use-std-min-max,-readability-function-cognitive-complexity,
+-bugprone-macro-parentheses,-bugprone-narrowing-conversions,-bugprone-easily-swappable-parameters,-bugprone-switch-missing-default-case,-bugprone-unhandled-self-assignment,
+-cppcoreguidelines-non-private-member-variables-in-classes,-cppcoreguidelines-pro-type-union-access,
+-cppcoreguidelines-avoid-magic-numbers,-cppcoreguidelines-macro-usage,-cppcoreguidelines-special-member-functions,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+-cppcoreguidelines-pro-type-reinterpret-cast,-cppcoreguidelines-pro-type-const-cast,-cppcoreguidelines-narrowing-conversions,
+-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-bounds-pointer-arithmetic,
+-cppcoreguidelines-macro-to-enum,-cppcoreguidelines-pro-bounds-constant-array-index, -cppcoreguidelines-avoid-do-while,
+-cppcoreguidelines-avoid-non-const-global-variables, -cppcoreguidelines-avoid-goto, -cppcoreguidelines-avoid-c-arrays,-cppcoreguidelines-pro-type-vararg,-cppcoreguidelines-no-malloc
+'
+FormatStyle: file
+CheckOptions:
+  - key: cppcoreguidelines-pro-type-member-init.IgnoreArrays
+    value: 1
