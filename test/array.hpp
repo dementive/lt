@@ -1,8 +1,8 @@
-#include "../extra/SFT.hpp"
 #include "lt/array.hpp"
+#include "lt/defs/test.hpp"
 
-static void test_array() {
-	lt::array<int, 5> arr{1,2,3,4,5};
+test(array,
+	lt::array<int, 5> arr = {1,2,3,4,5};
 	arr[3] = 999;
 
 	named_tests("array",
@@ -13,4 +13,4 @@ static void test_array() {
 		"begin", *arr.begin() == 1,
 		"end", *(arr.end() - 1) == 5
 	)
-}
+)

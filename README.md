@@ -47,8 +47,6 @@ In the `extras` directory there are some other useful utilities that are built u
 
 - `log.hpp` - https://github.com/tezc/sc/tree/master/logger adapted to C++.
 
-- `SFT.hpp` - Simple testing framework that uses disgusting recursive macro tricks to make it nicer to use than any other C/C++ testing framework in existence.
-
 ## Credits
 
 The tuple and list were adapted from the Tuple and SelfList from [Godot](https://github.com/godotengine/godot/tree/master/core/templates).

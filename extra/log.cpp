@@ -1,4 +1,5 @@
 #include "log.hpp"
+
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>

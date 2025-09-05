@@ -28,6 +28,7 @@ AlignConsecutiveShortCaseStatements:
 # AllowShortFunctionsOnASingleLine: All
 # AllowShortLambdasOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: Never
+
 # AllowShortLoopsOnASingleLine: false
 # AlwaysBreakAfterDefinitionReturnType: None
 # AlwaysBreakAfterReturnType: None
@@ -167,6 +168,11 @@ SpacesInLineCommentPrefix:
 # StatementMacros:
 #   - Q_UNUSED
 #   - QT_REQUIRE_VERSION
+WhitespaceSensitiveMacros:
+  - test
+  - named_tests
+  - tests
+  - run_tests
 TabWidth:        4
 # UseCRLF:         false
 UseTab:          Always

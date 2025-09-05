@@ -1,8 +1,3 @@
-#include "test.cpp"
-#include "array.cpp"
+#include "array.hpp"
 
-int main(int argc, char const *argv[]) {
-	test_tests();
-	test_array();
-	return 0;
-}
+test_main(array)

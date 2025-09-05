@@ -1,14 +1,13 @@
-#include "../extra/SFT.hpp"
+#include "lt/defs/test.hpp"
 
 // Tests to test the tests
-void test_tests() {
-	tests("SFT",
+test(tests,
+	tests("tests",
 		0 == 1, // test fail
 		999 == 999 // test pass
 	)
-
-	named_tests("SFT",
+	named_tests("tests",
 		"Fail test", 0 == 1,
 		"Pass test", 999 == 999
 	)
-}
+)

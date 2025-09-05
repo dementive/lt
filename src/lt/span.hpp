@@ -1,9 +1,9 @@
 #pragma once
 
-#include <stddef.h>
-
 #include "lt/defs/crash.hpp"
 #include "lt/types/concepts.hpp"
+
+#include <stddef.h>
 
 namespace lt {
 

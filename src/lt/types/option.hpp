@@ -1,8 +1,8 @@
 #pragma once
 
-#include <new> // for placement new
-
 #include "lt/defs/move.hpp"
+
+#include <new> // for placement new
 
 namespace lt {
 

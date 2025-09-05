@@ -1,6 +1,9 @@
 #include "perf.hpp"
 
 #if defined(__linux__)
+#include "lt/fixed_string.hpp"
+#include "lt/fixed_vector.hpp"
+
 #include <linux/perf_event.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -10,9 +13,6 @@
 #include <sys/syscall.h>
 #include <time.h>
 #include <unistd.h>
-
-#include "lt/fixed_string.hpp"
-#include "lt/fixed_vector.hpp"
 
 #define SC_PERF_HW_CACHE(CACHE, OP, RESULT) ((PERF_COUNT_HW_CACHE_##CACHE) | (PERF_COUNT_HW_CACHE_OP_##OP << 8u) | (PERF_COUNT_HW_CACHE_RESUsc_##RESULT << 16u))
 #define SC_PERF_BUFFER_SIZE 100
