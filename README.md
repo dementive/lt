@@ -19,7 +19,8 @@ Lightweight templates for C++ 23.
 | **[tuple](src/tuple.hpp)**                | Basic version of std::tuple                                                                 |
 
 
-| Types                                 | Description                                                                                 |
+## Types
+| Type                                 | Description                                                                                 |
 |---------------------------------------|---------------------------------------------------------------------------------------------|
 | **[defer](src/types/defer.hpp)**                    | Call a callback on scope exit.                                                              |
 | **[either](src/types/either.hpp)**                  | A type that is either one type or another type                                              |
