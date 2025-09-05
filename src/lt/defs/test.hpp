@@ -25,10 +25,7 @@
 #define run_tests(...) FOR_EACH(RUN_TEST, __VA_OPT__(__VA_ARGS__, ))
 
 #define test_main(...)                                                                                                                                                                       \
-	int main(int argc, const char *argv[]) {                                                                                                                                                 \
-		run_tests(__VA_ARGS__);                                                                                                                                                              \
-		TEST_END_MESSAGE()                                                                                                                                                                   \
-	}
+	int main(int argc, const char *argv[]) { run_tests(__VA_ARGS__) TEST_END_MESSAGE() }
 
 /*
 clang-format will completely destroy the above macros when used.

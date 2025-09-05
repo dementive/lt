@@ -71,8 +71,12 @@ public:
 	}
 
 	constexpr fixed_string &operator=(const fixed_string &other) {
-		if (this != &other)
+		if not consteval {
+			if (this != &other)
+				lt::detail::strncpy(this->cstr, other.cstr, N + 1);
+		} else {
 			lt::detail::strncpy(this->cstr, other.cstr, N + 1);
+		}
 		return *this;
 	}
 
@@ -94,15 +98,15 @@ public:
 		return *this;
 	}
 
-	constexpr bool operator==(const char *other) { return !lt::detail::strcmp(this->cstr, other); }
-	constexpr bool operator==(char *other) { return !lt::detail::strcmp(this->cstr, other); }
-	constexpr bool operator==(const fixed_string &other) { return !lt::detail::strcmp(this->cstr, other.cstr); }
-	constexpr bool operator==(fixed_string &other) { return !lt::detail::strcmp(this->cstr, other.cstr); }
+	constexpr bool operator==(const char *other) const { return !lt::detail::strcmp(this->cstr, other); }
+	constexpr bool operator==(char *other) const { return !lt::detail::strcmp(this->cstr, other); }
+	constexpr bool operator==(const fixed_string &other) const { return !lt::detail::strcmp(this->cstr, other.cstr); }
+	constexpr bool operator==(fixed_string &other) const { return !lt::detail::strcmp(this->cstr, other.cstr); }
 
-	constexpr bool operator!=(const char *other) { return lt::detail::strcmp(this->cstr, other); }
-	constexpr bool operator!=(char *other) { return lt::detail::strcmp(this->cstr, other); }
-	constexpr bool operator!=(const fixed_string &other) { return lt::detail::strcmp(this->cstr, other.cstr); }
-	constexpr bool operator!=(fixed_string &other) { return lt::detail::strcmp(this->cstr, other.cstr); }
+	constexpr bool operator!=(const char *other) const { return lt::detail::strcmp(this->cstr, other); }
+	constexpr bool operator!=(char *other) const { return lt::detail::strcmp(this->cstr, other); }
+	constexpr bool operator!=(const fixed_string &other) const { return lt::detail::strcmp(this->cstr, other.cstr); }
+	constexpr bool operator!=(fixed_string &other) const { return lt::detail::strcmp(this->cstr, other.cstr); }
 
 	constexpr char &operator[](int i) { return cstr[i]; }
 
