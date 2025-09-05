@@ -58,6 +58,9 @@ public:
 	constexpr const T &back() const { return data[current_size - 1]; }
 	constexpr T &back() { return data[current_size - 1]; }
 
+	constexpr const T &front() const { return data[current_size - 1]; }
+	constexpr T &front() { return data[current_size - 1]; }
+
 	constexpr void erase(const T &p_val) {
 		int to_remove = 0;
 		for (int i = 0; i < current_size; ++i)

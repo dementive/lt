@@ -44,7 +44,7 @@ public:
 	}
 
 	constexpr void push_back(const T &p_val) {
-		if (current_size >= N)
+		if (current_size > N)
 			lt_crash("index out of bounds");
 		data[current_size++] = T(p_val);
 	}
@@ -55,6 +55,9 @@ public:
 	}
 	constexpr const T &back() const { return data[current_size - 1]; }
 	constexpr T &back() { return data[current_size - 1]; }
+
+	constexpr const T &front() const { return data[0]; }
+	constexpr T &front() { return data[0]; }
 
 	constexpr fixed_vector() = default;
 	constexpr fixed_vector(std::initializer_list<T> p_init) {
