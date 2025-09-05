@@ -39,7 +39,7 @@ Lightweight templates for C++ 23.
 
 - The only standard library headers used are:  `<new>`, `<stddef.h>`, and `<initializer_list>`.
 
-## Extrashttps://www.google.com/search?&q=best+C%2FC%2B%2B+testing+frameworks+and+usage+examples
+## Extras
 
 In the `extras` directory there are some other useful utilities that are built using some things from lt.
 
@@ -53,4 +53,4 @@ In the `extras` directory there are some other useful utilities that are built u
 
 The tuple and list were adapted from the Tuple and SelfList from [Godot](https://github.com/godotengine/godot/tree/master/core/templates).
 
-Perf and logging utilities were adapted from https://github.com/tezc/sc
+Perf and logging utilities were adapted from [sc](https://github.com/tezc/sc)
