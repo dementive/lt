@@ -10,14 +10,17 @@
 
 // Usage interface
 
-#define test(m_name, ...)                                                                                                                                                                    \
+#define test(m_name, ...) test_func(m_name, named_tests(#m_name,__VA_ARGS__))
+#define utest(m_name, ...) test_func(m_name, unamed_tests(#m_name, __VA_ARGS__))
+
+#define test_func(m_name, ...)                                                                                                                                                               \
 	static inline void test_##m_name() { __VA_ARGS__ }
 
 #define named_tests(test_case_name, ...)                                                                                                                                                     \
 	TEST_PRINT_FUNCTION(TEST_CASE_NAME_MESSAGE, test_case_name);                                                                                                                             \
 	FOR_EACH_THREE(CHECK_NAMED, test_case_name, __VA_OPT__(__VA_ARGS__, ))
 
-#define tests(test_case_name, ...)                                                                                                                                                           \
+#define unamed_tests(test_case_name, ...)                                                                                                                                                    \
 	LT_check_number = 1;                                                                                                                                                                     \
 	TEST_PRINT_FUNCTION(TEST_CASE_NAME_MESSAGE, test_case_name);                                                                                                                             \
 	FOR_EACH_TWO(CHECK, test_case_name, __VA_OPT__(__VA_ARGS__, ))
@@ -33,8 +36,9 @@ To fix this without littering every test file with "clang-format off" use the fo
 
 WhitespaceSensitiveMacros:
   - test
+  - utest
   - named_tests
-  - tests
+  - unamed_tests
 */
 
 // Impl
@@ -42,23 +46,15 @@ WhitespaceSensitiveMacros:
 #define TEST_PRINT_FUNCTION printf
 #define PRINT_TEST(message, name, file, line, condition) TEST_PRINT_FUNCTION(message, name, file, line, condition);
 
-#define TEST_FAIL_COLOR "\033[31m"
-#define TEST_PASS_COLOR "\033[32m"
-#define TEST_NAME_COLOR "\033[33m"
-#define TEST_COLOR_END "\033[0m"
+#define TEST_FAIL_MESSAGE "%-55s | \033[31mFailed\033[0m %s%s - %s\n"
+#define TEST_PASS_MESSAGE "%-55s | \033[32mPassed\033[0m %s%s%s\n"
 
-#define TEST_FAIL_WORD TEST_FAIL_COLOR "Failed" TEST_COLOR_END
-#define TEST_PASS_WORD TEST_PASS_COLOR "Passed" TEST_COLOR_END
+#define TEST_FAIL_UNNAMED_MESSAGE "%-55d | \033[31mFailed\033[0m %s%s - %s\n"
+#define TEST_PASS_UNNAMED_MESSAGE "%-55d | \033[32mPassed\033[0m %s%s%s\n"
 
-#define TEST_FAIL_MESSAGE "%-55s | " TEST_FAIL_WORD " %s%s - %s\n"
-#define TEST_PASS_MESSAGE "%-55s | " TEST_PASS_WORD " %s%s%s\n"
+#define TEST_CASE_NAME_MESSAGE "\n\033[33m%s\033[0m\n"
 
-#define TEST_FAIL_UNNAMED_MESSAGE "%-55d | " TEST_FAIL_WORD " %s%s - %s\n"
-#define TEST_PASS_UNNAMED_MESSAGE "%-55d | " TEST_PASS_WORD " %s%s%s\n"
-
-#define TEST_CASE_NAME_MESSAGE "\n" TEST_NAME_COLOR "%s" TEST_COLOR_END "\n"
-
-#define TEST_END_MESSAGE() TEST_PRINT_FUNCTION("\n--------------------\n%d Tests\n%d Passed\n%d Failed", lt_total_tests, lt_passed_tests, lt_failed_tests);
+#define TEST_END_MESSAGE() TEST_PRINT_FUNCTION("\n------------\n%d Tests\n%d Passed\n%d Failed", lt_total_tests, lt_passed_tests, lt_failed_tests);
 
 #define STRINGIZE2(x) #x
 #define STRINGIZE(x) STRINGIZE2(x)
