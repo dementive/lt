@@ -48,6 +48,8 @@ Lightweight templates for C++ 23.
 
 - The only standard library headers used are:  `<new>`, `<stddef.h>`, and `<initializer_list>`.
 
+- Compiles cleanly with `-Wall -Wextra -Wpedantic -Wshadow` and all sanitizers.
+
 ## Extras
 
 In the `extras` directory there are some other useful utilities that are built using some things from lt.

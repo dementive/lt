@@ -165,9 +165,9 @@ SpacesInLineCommentPrefix:
 # BitFieldColonSpacing: Both
 # StatementAttributeLikeMacros:
 #   - Q_EMIT
-# StatementMacros:
-#   - Q_UNUSED
-#   - QT_REQUIRE_VERSION
+StatementMacros:
+  - lt_crash
+
 WhitespaceSensitiveMacros:
   - test
   - utest

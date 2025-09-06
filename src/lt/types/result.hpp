@@ -53,11 +53,13 @@ public:
 	constexpr const T &value() const { return val; }
 	constexpr const T &expect() const {
 		if (!has_val)
-			lt_crash("result has no value") return val;
+			lt_crash("result has no value")
+		return val;
 	}
 	constexpr const T &unwrap() const {
 		if (!has_val)
-			lt_crash("result has no value") return val;
+			lt_crash("result has no value")
+		return val;
 	}
 	constexpr T value_or(const T &p_val) const {
 		if (has_val)
@@ -72,11 +74,13 @@ public:
 
 	constexpr E expect_err() const {
 		if (has_val)
-			lt_crash("result has has a value. expected an error.") return err_val;
+			lt_crash("result has has a value. expected an error.")
+		return err_val;
 	}
 	constexpr E unwrap_err() const {
 		if (has_val)
-			lt_crash("result has has a value. expected an error.") return err_val;
+			lt_crash("result has has a value. expected an error.")
+		return err_val;
 	}
 	constexpr E error() const { return err_val; }
 	constexpr E error_or_default() const {

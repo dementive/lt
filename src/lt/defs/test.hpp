@@ -1,9 +1,5 @@
 #pragma once
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat"
-#pragma clang diagnostic ignored "-Wformat-extra-args"
-
 #include "lt/defs/for_each.hpp"
 
 #include <stdio.h>
@@ -29,7 +25,7 @@
 #define run_tests(...) FOR_EACH(RUN_TEST, __VA_OPT__(__VA_ARGS__, ))
 
 #define test_main(...)                                                                                                                                                                       \
-	int main(int argc, const char *argv[]) { run_tests(__VA_ARGS__) TEST_END_MESSAGE() return lt_failed_tests > 0 ? 1 : 0; }
+	int main([[maybe_unused]] int argc, [[maybe_unused]] const char *argv[]) { run_tests(__VA_ARGS__) TEST_END_MESSAGE() return lt_failed_tests > 0 ? 1 : 0; }
 
 // Impl
 

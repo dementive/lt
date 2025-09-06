@@ -39,7 +39,7 @@ template <typename T> struct span {
 	constexpr const T *begin() const { return ptr; }
 	constexpr const T *end() const { return ptr + length; }
 
-	constexpr span<T> subspan(int offset, size_t count) const {
+	constexpr span<T> subspan(size_t offset, size_t count) const {
 		if (offset > length || offset + count > length)
 			lt_crash("subspan construction out of bounds");
 		return { ptr + offset, count };
