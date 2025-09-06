@@ -8,40 +8,29 @@ namespace lt {
 template <typename T, typename S> class [[nodiscard]] either {
 private:
 	union {
-		T first_val;
-		S second_val;
+		T left_val;
+		S right_val;
 	};
-	bool has_first;
+	bool has_left;
 
 public:
 	constexpr either() = delete /*("either must be constructed from a value.")*/;
 	constexpr either(T &&p_val) :
-			first_val(LT_MOV(p_val)),
-			has_first(true) {}
-	constexpr either(S &&p_second_val) :
-			second_val(LT_MOV(p_second_val)),
-			has_first(false) {}
+			left_val(LT_MOV(p_val)),
+			has_left(true) {}
+	constexpr either(S &&p_right_val) :
+			right_val(LT_MOV(p_right_val)),
+			has_left(false) {}
 
-	constexpr operator bool() const { return has_first; }
+	constexpr const T &left() const { return left_val; }
+	constexpr bool is_left() const { return has_left ? true : false; }
+	constexpr T left_or(const T &p_val) const { return has_left ? left_val : p_val; }
+	constexpr T left_or_default() const { return has_left ? left_val : T(); }
 
-	constexpr bool is_first() { return has_first ? true : false; }
-	constexpr bool is_second() { return !has_first ? true : false; }
-
-	constexpr T &first() { return first_val; }
-	constexpr T &first_or() {
-		if (has_first)
-			return first_val;
-
-		return {};
-	}
-
-	constexpr S &second() { return second_val; }
-	constexpr S &second_or() {
-		if (!has_first)
-			return second_val;
-
-		return {};
-	}
+	constexpr const S &right() const { return right_val; }
+	constexpr bool is_right() const { return !has_left ? true : false; }
+	constexpr S right_or(const S &p_val) const { return !has_left ? right_val : p_val; }
+	constexpr S right_or_default() const { return !has_left ? right_val : S(); }
 };
 
 } // namespace lt
