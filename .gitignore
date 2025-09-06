@@ -8,6 +8,7 @@ compile_commands.json
 install_manifest.txt
 CTestTestfile.cmake
 .cmake/
+test/main.cpp
 
 *.exe
 *.dll

@@ -28,7 +28,7 @@
 #define run_tests(...) FOR_EACH(RUN_TEST, __VA_OPT__(__VA_ARGS__, ))
 
 #define test_main(...)                                                                                                                                                                       \
-	int main(int argc, const char *argv[]) { run_tests(__VA_ARGS__) TEST_END_MESSAGE() }
+	int main(int argc, const char *argv[]) { run_tests(__VA_ARGS__) TEST_END_MESSAGE() return lt_failed_tests > 0 ? 1 : 0; }
 
 /*
 clang-format will completely destroy the above macros when used.
@@ -46,15 +46,15 @@ WhitespaceSensitiveMacros:
 #define TEST_PRINT_FUNCTION printf
 #define PRINT_TEST(message, name, file, line, condition) TEST_PRINT_FUNCTION(message, name, file, line, condition);
 
-#define TEST_FAIL_MESSAGE "%-55s | \033[31mFailed\033[0m %s%s - %s\n"
-#define TEST_PASS_MESSAGE "%-55s | \033[32mPassed\033[0m %s%s%s\n"
+#define TEST_FAIL_MESSAGE "%-55s - \033[31mFailed\033[0m - %s%s | %s\n"
+#define TEST_PASS_MESSAGE "%-55s | \033[32mPassed\033[0m | %s%s%s\n"
 
-#define TEST_FAIL_UNNAMED_MESSAGE "%-55d | \033[31mFailed\033[0m %s%s - %s\n"
-#define TEST_PASS_UNNAMED_MESSAGE "%-55d | \033[32mPassed\033[0m %s%s%s\n"
+#define TEST_FAIL_UNNAMED_MESSAGE "%-55d - \033[31mFailed\033[0m - %s%s | %s\n"
+#define TEST_PASS_UNNAMED_MESSAGE "%-55d | \033[32mPassed\033[0m | %s%s%s\n"
 
 #define TEST_CASE_NAME_MESSAGE "\n\033[33m%s\033[0m\n"
 
-#define TEST_END_MESSAGE() TEST_PRINT_FUNCTION("\n------------\n%d Tests\n%d Passed\n%d Failed", lt_total_tests, lt_passed_tests, lt_failed_tests);
+#define TEST_END_MESSAGE() TEST_PRINT_FUNCTION("\n------------\n%d Tests\n%d Passed\n%d Failed\n------------\n", lt_total_tests, lt_passed_tests, lt_failed_tests);
 
 #define STRINGIZE2(x) #x
 #define STRINGIZE(x) STRINGIZE2(x)

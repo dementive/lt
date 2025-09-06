@@ -170,7 +170,9 @@ SpacesInLineCommentPrefix:
 #   - QT_REQUIRE_VERSION
 WhitespaceSensitiveMacros:
   - test
+  - utest
   - named_tests
+  - unamed_tests
   - tests
   - run_tests
 TabWidth:        4
