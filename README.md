@@ -27,6 +27,15 @@ Lightweight templates for C++ 23.
 | **[option](src/lt/types/option.hpp)**                  | Basic version of std::optional                                             |
 | **[result](src/lt/types/result.hpp)**                  | Basic version of std::expected                                             |
 
+
+## Macros
+| Macro                                  | Description                                                                                 |
+|---------------------------------------|---------------------------------------------------------------------------------------------|
+| **[DebugType](src/lt/defs/debug.hpp)**                    | Type that is only enabled in debug mode.                          |
+| **[debug_func](src/lt/defs/debug.hpp)**                  | Function that is only enabled in debug mode.                  |
+| **[FOR_EACH](src/lt/defs/for_each.hpp)**                  | Recursive macro.                  |
+| **[test](src/lt/defs/test.hpp)**                  | Simple testing framework using recursive macros.                  |
+
 ## Features
 
 - No dynamic memory allocation
@@ -35,7 +44,7 @@ Lightweight templates for C++ 23.
 
 - No rtti
 
-- Everything is constexpr
+- Almost everything is constexpr
 
 - The only standard library headers used are:  `<new>`, `<stddef.h>`, and `<initializer_list>`.
 
