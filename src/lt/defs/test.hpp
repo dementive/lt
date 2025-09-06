@@ -10,11 +10,12 @@
 
 // Usage interface
 
-#define test(m_name, ...) test_func(m_name, named_tests(#m_name,__VA_ARGS__))
-#define utest(m_name, ...) test_func(m_name, unamed_tests(#m_name, __VA_ARGS__))
+#define test(m_name, ...) TEST_FUNCTION_DECLARATION(m_name, named_tests(#m_name,__VA_ARGS__))
+#define utest(m_name, ...) TEST_FUNCTION_DECLARATION(m_name, unamed_tests(#m_name, __VA_ARGS__))
 
-#define test_func(m_name, ...)                                                                                                                                                               \
-	static inline void test_##m_name() { __VA_ARGS__ }
+#define test_func(...)                                                                                                                                                                       \
+	const auto t_l = [&]() { __VA_ARGS__ };                                                                                                                                                  \
+	t_l()
 
 #define named_tests(test_case_name, ...)                                                                                                                                                     \
 	TEST_PRINT_FUNCTION(TEST_CASE_NAME_MESSAGE, test_case_name);                                                                                                                             \
@@ -42,6 +43,9 @@ WhitespaceSensitiveMacros:
 */
 
 // Impl
+
+#define TEST_FUNCTION_DECLARATION(m_name, ...)                                                                                                                                               \
+	static inline void test_##m_name() { __VA_ARGS__ }
 
 #define TEST_PRINT_FUNCTION printf
 #define PRINT_TEST(message, name, file, line, condition) TEST_PRINT_FUNCTION(message, name, file, line, condition);

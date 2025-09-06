@@ -122,11 +122,11 @@ public:
 	}
 
 	constexpr bool ends_with(const char *p_str) {
-		int lStr = lt::detail::strlen(p_str);
-		int lThis = lt::detail::strlen(cstr);
-		if (lStr > lThis)
+		int str_l = lt::detail::strlen(p_str);
+		int this_l = lt::detail::strlen(cstr);
+		if (str_l > this_l)
 			return false;
-		return !lt::detail::strcmp(p_str, cstr + (lThis - lStr));
+		return !lt::detail::strcmp(p_str, cstr + (this_l - str_l));
 	}
 };
 

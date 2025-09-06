@@ -8,7 +8,11 @@ test(fixed_set,
 	"operator[] assignment", set[3] = 999; set[3] == 999,
 	"at", set[4] == 5,
 	"size", set.size() == 5,
-	"push_back", auto t = [&](){ set.push_back(6); set.push_back(8); return set.size() == 7; }; t(),
+	"push_back", test_func(
+		set.push_back(6); 
+		set.push_back(8); 
+		return set.size() == 7;
+	),
 	"pop_back", set.pop_back(); set.size() == 6,
 	"front", set.front() == 1,
 	"back", set.back() == 6,
