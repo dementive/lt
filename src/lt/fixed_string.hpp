@@ -110,7 +110,7 @@ public:
 
 	constexpr char &operator[](int i) { return cstr[i]; }
 
-	constexpr const char *c_str() { return (const char *)cstr; }
+	constexpr const char *c_str() const { return (const char *)cstr; }
 	constexpr int length() { return lt::detail::strlen(cstr); }
 	constexpr int max_size() { return N; }
 

@@ -37,19 +37,22 @@ private:
 			data[current_size++] = KV(p_key, p_val);
 	}
 
-	constexpr const Type &_get(const Key &p_key) const {
-		KV *value = find(p_key);
-		if (value == nullptr)
-			lt_crash("index out of bounds");
-		return value;
-	}
-
 public:
 	Type data{};
 
-	constexpr size_t size() { return current_size; }
-	constexpr const Value &operator[](const Key &p_key) const { return _get(p_key); }
-	constexpr Value &operator[](const Key &p_key) { return _get(p_key); }
+	constexpr size_t size() const { return current_size; }
+	constexpr const Value &operator[](const Key &p_key) const {
+		KV *value = find(p_key);
+		if (value == nullptr)
+			lt_crash("index out of bounds");
+		return value->second;
+	}
+	constexpr Value &operator[](const Key &p_key) {
+		KV *value = find(p_key);
+		if (value == nullptr)
+			lt_crash("index out of bounds");
+		return value->second;
+	}
 
 	constexpr const Type &operator[](size_t p_index) const { return data[p_index]; }
 	constexpr Type &operator[](size_t p_index) { return data[p_index]; }
@@ -63,11 +66,11 @@ public:
 	constexpr void erase(const Key &p_val) {
 		int to_remove = 0;
 		for (int i = 0; i < current_size; ++i)
-			if (data[i] == p_val)
+			if (data[i].first == p_val)
 				to_remove = i;
 
 		if (to_remove == current_size - 1) {
-			data[to_remove].~Type();
+			data[to_remove].~KV();
 			current_size--;
 			return;
 		}
@@ -95,14 +98,14 @@ public:
 	constexpr fixed_map() = default;
 	constexpr fixed_map(std::initializer_list<KV> p_init) {
 		for (const KV &E : p_init)
-			if (!has(E))
+			if (!has(E.first))
 				data[current_size++] = E;
 	};
 
-	constexpr Type *begin() { return data; }
-	constexpr Type *end() { return data + current_size; }
-	constexpr const Type *begin() const { return data; }
-	constexpr const Type *end() const { return data + current_size; }
+	constexpr const KV *begin() const { return data; }
+	constexpr const KV *end() const { return data + current_size; }
+	constexpr KV *begin() { return data; }
+	constexpr KV *end() { return data + current_size; }
 };
 
 #undef LT_MAP_SIZE_TYPE
