@@ -111,17 +111,17 @@ public:
 	constexpr char &operator[](int i) { return cstr[i]; }
 
 	constexpr const char *c_str() const { return (const char *)cstr; }
-	constexpr int length() { return lt::detail::strlen(cstr); }
-	constexpr int max_size() { return N; }
+	constexpr int length() const { return lt::detail::strlen(cstr); }
+	constexpr int max_size() const { return N; }
 
-	constexpr fixed_string<N> substr(int pos = 0, int len = N + 1) {
+	constexpr fixed_string<N> substr(int pos = 0, int len = N + 1) const {
 		fixed_string<N> r;
 		if (pos < lt::detail::strlen(this->cstr))
 			lt::detail::strncpy(r.cstr, this->cstr + pos, len);
 		return r;
 	}
 
-	constexpr bool ends_with(const char *p_str) {
+	constexpr bool ends_with(const char *p_str) const {
 		int str_l = lt::detail::strlen(p_str);
 		int this_l = lt::detail::strlen(cstr);
 		if (str_l > this_l)

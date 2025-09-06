@@ -23,6 +23,9 @@ template <typename T> struct span {
 			ptr(x.begin()),
 			length(x.size()) {}
 
+	span &operator=(const span &) = delete;
+	span &operator=(span &&) = delete;
+
 	constexpr size_t size() const { return length; }
 	constexpr bool is_empty() const { return length == 0; }
 
@@ -36,7 +39,7 @@ template <typename T> struct span {
 	constexpr const T *begin() const { return ptr; }
 	constexpr const T *end() const { return ptr + length; }
 
-	constexpr span<T> subspan(int offset, int count) const {
+	constexpr span<T> subspan(int offset, size_t count) const {
 		if (offset > length || offset + count > length)
 			lt_crash("subspan construction out of bounds");
 		return { ptr + offset, count };
