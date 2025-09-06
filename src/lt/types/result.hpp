@@ -50,27 +50,27 @@ public:
 		return false;
 	}
 
-	constexpr T &value() const { return val; }
-	constexpr T &expect([[maybe_unused]] const char *p_str) const {
+	constexpr const T &value() const { return val; }
+	constexpr const T &expect() const {
 		if (!has_val)
 			lt_crash("result has no value") return val;
 	}
-	constexpr T &unwrap() const {
+	constexpr const T &unwrap() const {
 		if (!has_val)
 			lt_crash("result has no value") return val;
 	}
-	constexpr T &value_or(const T &p_val) const {
+	constexpr T value_or(const T &p_val) const {
 		if (has_val)
 			return value();
 		return p_val;
 	}
-	constexpr T &value_or_default() const {
+	constexpr T value_or_default() const {
 		if (has_val)
 			return value();
-		return T{};
+		return {};
 	}
 
-	constexpr E expect_err([[maybe_unused]] const char *p_str) const {
+	constexpr E expect_err() const {
 		if (has_val)
 			lt_crash("result has has a value. expected an error.") return err_val;
 	}
@@ -82,7 +82,6 @@ public:
 	constexpr E error_or_default() const {
 		if (!has_val)
 			return err_val;
-
 		return {};
 	}
 };

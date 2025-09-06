@@ -29,6 +29,9 @@ for filepath in hpp_files:
                 files_with_tests.add(filepath)
 
 hpp_files = [x.split("/")[-1] for x in hpp_files if x in files_with_tests]
+hpp_files.sort()
+test_functions.sort()
+
 includes = [f'#include "{file}"' for file in hpp_files]
 test_main_call = f'test_main({", ".join(test_functions)})'
 output = '\n'.join(includes + [''] + [test_main_call])
