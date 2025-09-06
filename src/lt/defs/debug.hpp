@@ -22,6 +22,4 @@ struct Debug {};
 // Use to define debug only functions without ifdefs all over.
 // The 'requires' clause can only be used in a template function so creates a dummy template parameter that does nothing so the function can use concepts.
 #define debug_func(m_sig) template <typename T = Debug> m_sig requires(DEBUG_ENABLED == 1)
-#define tools_func(m_sig) template <typename T = Debug> m_sig requires(TOOLS_ENABLED == 1)
-#define test_func(m_sig) template <typename T = Debug> m_sig requires(SFT_TESTS_ENABLED == 1)
 #define debug_impl template <>

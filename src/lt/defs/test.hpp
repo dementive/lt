@@ -6,7 +6,7 @@
 
 #include "lt/defs/for_each.hpp"
 
-#include <cstdio>
+#include <stdio.h>
 
 // Usage interface
 
@@ -30,17 +30,6 @@
 
 #define test_main(...)                                                                                                                                                                       \
 	int main(int argc, const char *argv[]) { run_tests(__VA_ARGS__) TEST_END_MESSAGE() return lt_failed_tests > 0 ? 1 : 0; }
-
-/*
-clang-format will completely destroy the above macros when used.
-To fix this without littering every test file with "clang-format off" use the following settings in your .clang-format file:
-
-WhitespaceSensitiveMacros:
-  - test
-  - utest
-  - named_tests
-  - unamed_tests
-*/
 
 // Impl
 

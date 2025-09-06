@@ -18,7 +18,8 @@ test(either,
 	"right_or_default", et2.right_or_default() != nullptr
 )
 
-																		inline lt::option<int> opt{ 1 };
+
+inline lt::option<int> opt{ 1 };
 inline lt::option<int> opt2{};
 
 test(option,
@@ -29,7 +30,8 @@ test(option,
 	"value_or_default", opt2.value_or_default() == 0
 )
 
-												inline lt::result<int> res{ 1 };
+
+inline lt::result<int> res{ 1 };
 inline lt::result<int> res2{ lt::Error::Err };
 
 test(result,

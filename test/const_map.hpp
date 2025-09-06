@@ -3,7 +3,10 @@
 #include "lt/fixed_string.hpp"
 
 enum class Props : unsigned char { Yes, No, PROP_MAX };
-static constexpr lt::const_map<lt::cstr, lt::cstr, size_t(Props::PROP_MAX)> map{ { .first = "yes", .second = "cowabunga" }, { .first = "no", .second = "zoowemomma" } };
+static constexpr lt::const_map<lt::cstr, lt::cstr, size_t(Props::PROP_MAX)> map{
+	{ .first = "yes", .second = "cowabunga" },
+	{ .first = "no", .second = "zoowemomma" }
+};
 
 test(const_map,
 	"at", map.at("yes") == "cowabunga",

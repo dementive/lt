@@ -3,7 +3,10 @@
 #include "lt/fixed_string.hpp"
 
 enum class Props2 : unsigned char { Yes, No, PROP_MAX };
-static lt::fixed_map<lt::cstr, lt::cstr, int(Props2::PROP_MAX) + 1> fmap{ { .first = "yes", .second = "cowabunga" }, { .first = "no", .second = "zoowemomma" } };
+static lt::fixed_map<lt::cstr, lt::cstr, int(Props2::PROP_MAX) + 1> fmap{
+	{ .first = "yes", .second = "cowabunga" },
+	{ .first = "no", .second = "zoowemomma" }
+};
 
 test(fixed_map,
 	"size", fmap.size() == 2,
