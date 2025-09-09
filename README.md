@@ -63,3 +63,5 @@ In the `extras` directory there are some other useful utilities that are built u
 The tuple and list were adapted from the Tuple and SelfList from [Godot](https://github.com/godotengine/godot/tree/master/core/templates).
 
 Perf and logging utilities were adapted from [sc](https://github.com/tezc/sc)
+
+snprintf from [stb](https://github.com/nothings/stb/blob/master/stb_sprintf.h)
