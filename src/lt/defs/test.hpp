@@ -1,8 +1,7 @@
 #pragma once
 
-#include "lt/defs/for_each.hpp"
-
-#include <stdio.h>
+#include "for_each.hpp"
+#include "log.hpp"
 
 // Usage interface
 
@@ -32,18 +31,18 @@
 #define TEST_FUNCTION_DECLARATION(m_name, ...)                                                                                                                                               \
 	static inline void test_##m_name() { __VA_ARGS__ }
 
-#define TEST_PRINT_FUNCTION printf
+#define TEST_PRINT_FUNCTION lt::log
 #define PRINT_TEST(message, name, file, line, condition) TEST_PRINT_FUNCTION(message, name, file, line, condition);
 
-#define TEST_FAIL_MESSAGE "%-55s - \033[31mFailed\033[0m - %s%s | %s\n"
-#define TEST_PASS_MESSAGE "%-55s | \033[32mPassed\033[0m | %s%s%s\n"
+#define TEST_FAIL_MESSAGE "%-55s - \033[31mFailed\033[0m - %s%s | %s"
+#define TEST_PASS_MESSAGE "%-55s | \033[32mPassed\033[0m | %s%s%s"
 
-#define TEST_FAIL_UNNAMED_MESSAGE "%-55d - \033[31mFailed\033[0m - %s%s | %s\n"
-#define TEST_PASS_UNNAMED_MESSAGE "%-55d | \033[32mPassed\033[0m | %s%s%s\n"
+#define TEST_FAIL_UNNAMED_MESSAGE "%-55d - \033[31mFailed\033[0m - %s%s | %s"
+#define TEST_PASS_UNNAMED_MESSAGE "%-55d | \033[32mPassed\033[0m | %s%s%s"
 
-#define TEST_CASE_NAME_MESSAGE "\n\033[33m%s\033[0m\n"
+#define TEST_CASE_NAME_MESSAGE "\n\033[33m%s\033[0m"
 
-#define TEST_END_MESSAGE() TEST_PRINT_FUNCTION("\n------------\n%d Tests\n%d Passed\n%d Failed\n------------\n", lt_total_tests, lt_passed_tests, lt_failed_tests);
+#define TEST_END_MESSAGE() TEST_PRINT_FUNCTION("\n------------\n%d Tests\n%d Passed\n%d Failed\n------------", lt_total_tests, lt_passed_tests, lt_failed_tests);
 
 #define STRINGIZE2(x) #x
 #define STRINGIZE(x) STRINGIZE2(x)

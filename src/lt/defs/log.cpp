@@ -2,8 +2,6 @@
 
 #include "stb_sprintf.h"
 
-#include <cstring>
-
 #ifndef lt_log_buffer_size
 #define lt_log_buffer_size 1024
 #endif
