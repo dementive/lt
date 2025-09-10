@@ -44,4 +44,6 @@ target_include_directories(lt_library
     INTERFACE ${CMAKE_SOURCE_DIR}/src
 )
 add_executable(test "test/main.cpp")
+target_sources(test PRIVATE "src/lt/defs/stb_sprintf.cpp")
+
 target_link_libraries(test PUBLIC lt_library)

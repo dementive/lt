@@ -1,7 +1,6 @@
 #pragma once
 
-#define STB_SPRINTF_IMPLEMENTATION
-#define STB_SPRINTF_NOFLOAT
+// #define STB_SPRINTF_NOFLOAT
 #include "stb_sprintf.h"
 
 namespace lt {
@@ -18,37 +17,42 @@ namespace lt {
 #include <stdio.h>
 #endif
 
-inline void log(const char *data, ...) {
-	char buf[LT_LOG_BUFFER_SIZE];
+#define lt_log_fmt()                                                                                                                                                                         \
+	char buf[LT_LOG_BUFFER_SIZE];                                                                                                                                                            \
+	va_list va;                                                                                                                                                                              \
+	va_start(va, data);                                                                                                                                                                      \
+	int len = stb::vsprintf(buf, data, va);                                                                                                                                                  \
+	buf[len] = '\n';                                                                                                                                                                         \
+	buf[len + 1] = '\0';                                                                                                                                                                     \
+	len += 1;                                                                                                                                                                                \
+	va_end(va)
 
-	va_list va;
-	va_start(va, data);
-	int len = stbsp_vsprintf(buf, data, va);
-	va_end(va);
+inline void log(const char *data, ...) {
+	lt_log_fmt();
 
 #ifdef LT_LOG_LINUX_X86
 	LT_LOG_LINUX_X86(1);
 #else
-	printf("%s", buf);
+	fputs(buf, stdout);
 #endif
 }
 
-inline void log_error(const char *data, ...) {
-	char buf[LT_LOG_BUFFER_SIZE];
+inline void print(const char *data) { lt::log("%s", data); }
 
-	va_list va;
-	va_start(va, data);
-	int len = stbsp_vsprintf(buf, data, va);
-	va_end(va);
+inline void log_error(const char *data, ...) {
+	lt_log_fmt();
 
 #ifdef LT_LOG_LINUX_X86
 	LT_LOG_LINUX_X86(2);
 #else
-	fprintf(stderr, "%s", buf);
+	fputs(buf, stderr);
 #endif
 }
 
+inline void print_error(const char *data) { lt::log_error("%s", data); }
+
 #undef LT_LOG_LINUX_X86
 #undef LT_LOG_BUFFER_SIZE
+#undef lt_log_fmt
 
 } // namespace lt
