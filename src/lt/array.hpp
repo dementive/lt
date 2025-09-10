@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lt/defs/crash.hpp"
+#include "lt/defs/assert.hpp"
 
 #include <initializer_list>
 #include <stddef.h>
@@ -20,23 +20,17 @@ public:
 	constexpr T &operator[](size_t p_index) { return data[p_index]; }
 
 	constexpr const T &at(size_t p_index) const {
-		if (p_index >= N)
-			lt_crash("index out of bounds");
-
+		lt_assert_idx(p_index < N);
 		return data[p_index];
 	}
 	constexpr T &at(size_t p_index) {
-		if (p_index >= N)
-			lt_crash("index out of bounds");
-
+		lt_assert_idx(p_index < N);
 		return data[p_index];
 	}
 
 	constexpr array() = default;
 	constexpr array(std::initializer_list<T> p_init) {
-		if (p_init.size() != N)
-			lt_crash("index out of bounds");
-
+		lt_assert_idx(p_init.size() <= N);
 		for (int i = 0; const T &E : p_init)
 			data[i++] = E;
 	};

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lt/defs/crash.hpp"
+#include "lt/defs/assert.hpp"
 #include "lt/types/concepts.hpp"
 
 #include <stddef.h>
@@ -31,8 +31,7 @@ template <typename T> struct span {
 
 	constexpr const T &operator[](size_t p_idx) const { return ptr[p_idx]; }
 	constexpr const T &at(size_t p_idx) const {
-		if (p_idx >= length)
-			lt_crash("index out of bounds");
+		lt_assert_idx(p_idx < length);
 		return ptr[p_idx];
 	}
 
@@ -40,8 +39,7 @@ template <typename T> struct span {
 	constexpr const T *end() const { return ptr + length; }
 
 	constexpr span<T> subspan(size_t offset, size_t count) const {
-		if (offset > length || offset + count > length)
-			lt_crash("subspan construction out of bounds");
+		lt_assert_msg(offset <= length || offset + count <= length, "subspan construction out of bounds");
 		return { ptr + offset, count };
 	}
 

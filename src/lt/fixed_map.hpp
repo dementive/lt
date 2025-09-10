@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lt/defs/crash.hpp"
+#include "lt/defs/assert.hpp"
 
 #include <initializer_list>
 #include <stddef.h>
@@ -30,9 +30,7 @@ private:
 	using Type = KV[N];
 	LT_MAP_SIZE_TYPE current_size = 0;
 	constexpr void _insert(const Key &p_key, const Value &p_val) {
-		if (current_size >= N)
-			lt_crash("index out of bounds");
-
+		lt_assert_idx(current_size < N);
 		if (!has(p_key))
 			data[current_size++] = KV(p_key, p_val);
 	}
@@ -43,14 +41,12 @@ public:
 	constexpr size_t size() const { return current_size; }
 	constexpr const Value &operator[](const Key &p_key) const {
 		KV *value = find(p_key);
-		if (value == nullptr)
-			lt_crash("index out of bounds");
+		lt_assert_null(value);
 		return value->second;
 	}
 	constexpr Value &operator[](const Key &p_key) {
 		KV *value = find(p_key);
-		if (value == nullptr)
-			lt_crash("index out of bounds");
+		lt_assert_null(value);
 		return value->second;
 	}
 

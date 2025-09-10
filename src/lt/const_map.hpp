@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lt/defs/crash.hpp"
+#include "lt/defs/assert.hpp"
 
 #include <initializer_list>
 #include <stddef.h>
