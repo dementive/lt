@@ -1,8 +1,6 @@
 #include "perf.hpp"
 
 #if defined(__linux__)
-#include "lt/fixed_string.hpp"
-#include "lt/fixed_vector.hpp"
 
 #include <linux/perf_event.h>
 #include <stdint.h>
@@ -186,8 +184,6 @@ uint64_t sy_time_nano() {
 	return ((uint64_t)(ts.tv_nsec + (ts.tv_sec * 1000 * 1000 * 1000)));
 }
 
-lt::fixed_vector<perf_stats, SC_PERF_BUFFER_SIZE> stored_perf_stats;
-
 void print_perf_stat(const perf_stats &stat) {
 	printf("\n| %-25s | %-18s \n", stat.name, "Value");
 	printf("-----------------------------------------\n");
@@ -200,13 +196,6 @@ void print_perf_stat(const perf_stats &stat) {
 }
 
 } // namespace
-
-lt::span<perf_stats> get_perf_stats() { return { stored_perf_stats.data, static_cast<size_t>(stored_perf_stats.size()) }; }
-
-void print_perf_stats() {
-	for (const perf_stats &stat : stored_perf_stats)
-		print_perf_stat(stat);
-}
 
 void perf_start() {
 	if (!init) {
@@ -233,7 +222,12 @@ void perf_pause() {
 	running = 0;
 }
 
-void perf_end(const char *p_test_name, bool p_stdout) {
+struct StatMap {
+	const char *name;
+	void *stat_ptr;
+};
+
+void perf_end(const char *p_test_name) {
 	sc_perf_assert(init);
 
 	perf_pause();
@@ -246,23 +240,21 @@ void perf_end(const char *p_test_name, bool p_stdout) {
 	stats.name = p_test_name;
 	stats.time = (double)total / 1e6;
 
+	struct StatMap stat_map[] = { { "cpu-cycles", &stats.cpu_cycles }, { "instructions", &stats.instructions }, { "cache-misses", &stats.cache_misses },
+		{ "branch-misses", &stats.branch_misses } };
+
 	for (const sc_perf_item &item : sc_perf_items) {
 		const double value = item.value;
 
-		if (lt::cstr(item.event.name) == "cpu-cycles")
-			stats.cpu_cycles = value;
-		else if (lt::cstr(item.event.name) == "instructions")
-			stats.instructions = value;
-		else if (lt::cstr(item.event.name) == "cache-misses")
-			stats.cache_misses = value;
-		else if (lt::cstr(item.event.name) == "branch-misses")
-			stats.branch_misses = value;
+		for (const StatMap &i : stat_map) {
+			if (strcmp(item.event.name, i.name) == 0) {
+				*(int *)i.stat_ptr = value;
+				break;
+			}
+		}
 	}
 
-	if (p_stdout)
-		print_perf_stat(stats);
-
-	stored_perf_stats.push_back(stats);
+	print_perf_stat(stats);
 	sc_perf_clear();
 }
 
