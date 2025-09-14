@@ -10,12 +10,13 @@ namespace lt {
 // Simple wrapper around a C array.
 template <typename T, size_t N> struct array {
 private:
+	static_assert(N != 0, "Array cannot be 0 size.");
 	using Type = T[N];
 
 public:
 	Type data;
 
-	constexpr size_t size() { return N; }
+	constexpr size_t size() const { return N; }
 	constexpr const T &operator[](size_t p_index) const { return data[p_index]; }
 	constexpr T &operator[](size_t p_index) { return data[p_index]; }
 

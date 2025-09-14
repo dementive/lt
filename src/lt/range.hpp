@@ -14,7 +14,7 @@ template <typename T> struct range {
 			ptr(p_ptr),
 			length(plength) {}
 
-	constexpr range(lt::detail::Spanable auto &x) :
+	constexpr range(lt::Spanable auto &x) :
 			ptr(x.begin()),
 			length(x.size()) {}
 
@@ -30,7 +30,7 @@ template <typename T> struct range {
 	constexpr T *begin() const { return ptr; }
 	constexpr T *end() const { return ptr + length; }
 
-	constexpr range<T> subrange(int offset, int count) const {
+	constexpr range<T> subrange(size_t offset, size_t count) const {
 		lt_assert_msg(offset <= length || offset + count <= length, "subspan construction out of bounds");
 		return { ptr + offset, count };
 	}
