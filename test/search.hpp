@@ -10,15 +10,15 @@ inline auto is_greater_than_3 = [](int val) { return val > 3; };
 inline auto is_negative = [](int val) { return val < 0; };
 
 test(search,
-	"find existing value", lt::find({data}, 3),
-	"find non-existing value", lt::find({data}, 99) == nullptr,
-	"find on empty span", lt::find({empty_data}, 1) == nullptr,
-	"find result value", *lt::find({data}, 3) == 3,
+	"find existing value", lt::find(data, 3),
+	"find non-existing value", lt::find(data, 99) == nullptr,
+	"find on empty span", lt::find(empty_data, 1) == nullptr,
+	"find result value", *lt::find(data, 3) == 3,
 
-	"find_last existing value", lt::find_last({data}, 3),
-	"find_last non-existing value", lt::find_last({data}, 99) == nullptr,
-	"find_last on empty span", lt::find_last({empty_data}, 1) == nullptr,
-	"find_last result value", *lt::find_last({data}, 3) == 3,
+	"find_last existing value", lt::find_last(data, 3),
+	"find_last non-existing value", lt::find_last(data, 99) == nullptr,
+	"find_last on empty span", lt::find_last(empty_data, 1) == nullptr,
+	"find_last result value", *lt::find_last(data, 3) == 3,
 
 	"find_if existing value", lt::find_if<int>(data, is_even),
 	"find_if non-existing value", lt::find_if<int>(data, is_negative) == nullptr,

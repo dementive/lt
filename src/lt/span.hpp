@@ -1,7 +1,7 @@
 #pragma once
 
 #include "lt/defs/assert.hpp"
-#include "lt/types/concepts.hpp"
+#include "lt/types/range.hpp"
 
 #include <stddef.h>
 
@@ -19,7 +19,7 @@ template <typename T> struct span {
 			ptr(p_array),
 			length(N) {}
 
-	constexpr span(lt::Spanable auto &x) :
+	constexpr span(Range auto &x) :
 			ptr(x.begin()),
 			length(x.size()) {}
 
@@ -52,6 +52,6 @@ private:
 	size_t length = 0;
 };
 
-template <typename T> constexpr span<T> to_span(lt::Spanable auto &x) { return { x.begin(), x.size() }; }
+template <typename T> constexpr span<T> to_span(Range auto &x) { return { x.begin(), x.size() }; }
 
 } // namespace lt
