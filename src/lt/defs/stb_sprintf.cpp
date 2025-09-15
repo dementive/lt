@@ -802,6 +802,7 @@ STBSP_PUBLICDEF int stb::vsprintfcb(stb::stbsp_sprintfcb *callback, void *user, 
 				fl &= ~STBSP_LEADINGZERO; // 'p' only prints the pointer with zeros
 										  // fall through - to X
 
+				[[fallthrough]];
 			case 'X': // upper hex
 			case 'x': // lower hex
 				h = (f[0] == 'X') ? hexu : hex;

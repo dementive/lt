@@ -31,7 +31,7 @@ public:
 			if (pair.first == key)
 				return pair.second;
 
-		lt_crash("key not found");
+		lt_assert_msg(true, "key not found");
 		return data[0].second;
 	}
 

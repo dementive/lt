@@ -7,7 +7,7 @@
 #define lt_impl_assert(m_cond, m_msg)                                                                                                                                                        \
 	if (!(m_cond)) [[unlikely]] {                                                                                                                                                            \
 		lt_impl_log_assert_fail(m_cond, m_msg);                                                                                                                                              \
-		lt_crash("")                                                                                                                                                                         \
+		lt_crash()                                                                                                                                                                           \
 	}                                                                                                                                                                                        \
 	((void)0)
 
@@ -17,19 +17,19 @@
 #define lt_assert_msg(m_cond, m_msg) lt_impl_assert(m_cond, m_msg)
 
 #if defined(_MSC_VER)
-#define lt_crash(m_msg) __fastfail(7)
+#define lt_crash() __fastfail(7)
 #elif defined(__i386__) || defined(__x86_64__)
-#define lt_crash(m_msg) __asm__ volatile("ud2");
+#define lt_crash() __asm__ volatile("ud2");
 #elifdef __thumb__
-#define lt_crash(m_msg) __asm__ volatile(".inst 0xde01");
+#define lt_crash() __asm__ volatile(".inst 0xde01");
 #elifdef __aarch64__
-#define lt_crash(m_msg) __asm__ volatile(".inst 0xd4200000");
+#define lt_crash() __asm__ volatile(".inst 0xd4200000");
 #elifdef __arm__
-#define lt_crash(m_msg) __asm__ volatile(".inst 0xe7f001f0");
+#define lt_crash() __asm__ volatile(".inst 0xe7f001f0");
 #elifdef __riscv
-#define lt_crash(m_msg) __asm__ volatile(".4byte 0x00100073");
+#define lt_crash() __asm__ volatile(".4byte 0x00100073");
 #elif defined __powerpc__ && !defined _AIX
-#define lt_crash(m_msg) __asm__ volatile(".4byte 0x7d821008");
+#define lt_crash() __asm__ volatile(".4byte 0x7d821008");
 #else
-#define lt_crash(m_msg) __builtin_trap();
+#define lt_crash() __builtin_trap();
 #endif
