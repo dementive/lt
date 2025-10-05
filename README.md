@@ -14,7 +14,6 @@ Lightweight templates for C++ 23.
 | **[fixed_vector](src/lt/fixed_vector.hpp)**  | Fixed size vector                                                                           |
 | **[list](src/lt/list.hpp)**                  | Intrusive doubly linked list                                                                |
 | **[pair](src/lt/pair.hpp)**                  | Basic version of std::pair                                                                  |
-| **[range](src/lt/range.hpp)**                | Modifiable view into a contiguous memory space                                              |
 | **[span](src/lt/span.hpp)**                  | Const view into a contiguous memory space.                                                  |
 | **[tuple](src/lt/tuple.hpp)**                | Basic version of std::tuple                                                                 |
 
