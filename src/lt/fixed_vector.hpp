@@ -28,7 +28,7 @@ private:
 public:
 	Type data;
 
-	constexpr size_t size() { return current_size; }
+	constexpr size_t size() const { return current_size; }
 	constexpr const T &operator[](size_t p_index) const { return data[p_index]; }
 	constexpr T &operator[](size_t p_index) { return data[p_index]; }
 

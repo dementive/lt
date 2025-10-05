@@ -175,6 +175,8 @@ WhitespaceSensitiveMacros:
   - unamed_tests
   - tests
   - run_tests
+  - tool_code
+  - debug_code
 TabWidth:        4
 # UseCRLF:         false
 UseTab:          Always

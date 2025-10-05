@@ -8,6 +8,14 @@ namespace lt {
 #define lt_log_fmt
 #endif
 
+#if defined(__GNUC__) || defined(__clang__)
+#define gcc_fmt_diagnostic_push _Pragma("GCC diagnostic push") _Pragma("GCC diagnostic ignored \"-Wformat-invalid-specifier\"") _Pragma("GCC diagnostic ignored \"-Wformat-extra-args\"")
+#define gcc_fmt_diagnostic_pop _Pragma("GCC diagnostic pop")
+#else
+#define gcc_fmt_diagnostic_push
+#define gcc_fmt_diagnostic_pop
+#endif
+
 lt_log_fmt void log(const char *data, ...);
 lt_log_fmt void log_error(const char *data, ...);
 void print(const char *data);
