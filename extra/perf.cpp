@@ -1,5 +1,7 @@
 #include "perf.hpp"
 
+#include "lt/defs/log.hpp"
+
 #if defined(__linux__)
 
 #include <linux/perf_event.h>
@@ -9,7 +11,6 @@
 #include <string.h>
 #include <sys/prctl.h>
 #include <sys/syscall.h>
-#include <time.h>
 #include <unistd.h>
 
 #define SC_PERF_HW_CACHE(CACHE, OP, RESULT) ((PERF_COUNT_HW_CACHE_##CACHE) | (PERF_COUNT_HW_CACHE_OP_##OP << 8u) | (PERF_COUNT_HW_CACHE_RESUsc_##RESULT << 16u))
@@ -27,10 +28,12 @@ struct sc_perf_item {
 	int fd;
 };
 
+namespace {
+
 // clang-format off
-static const struct sc_perf_event sc_perf_hw[] = {
+constexpr struct sc_perf_event sc_perf_hw[] = {
         // {"cpu-clock",               PERF_TYPE_SOFTWARE, PERF_COUNT_SW_CPU_CLOCK                  },
-        // {"task-clock",              PERF_TYPE_SOFTWARE, PERF_COUNT_SW_TASK_CLOCK                 },
+        {"task-clock",              PERF_TYPE_SOFTWARE, PERF_COUNT_SW_TASK_CLOCK                 },
         // {"page-faults",             PERF_TYPE_SOFTWARE, PERF_COUNT_SW_PAGE_FAULTS                },
         // {"context-switches",        PERF_TYPE_SOFTWARE, PERF_COUNT_SW_CONTEXT_SWITCHES           },
         // {"cpu-migrations",          PERF_TYPE_SOFTWARE, PERF_COUNT_SW_CPU_MIGRATIONS             },
@@ -97,13 +100,6 @@ static const struct sc_perf_event sc_perf_hw[] = {
 // clang-format on
 #define ITEMS_SIZE (sizeof(sc_perf_hw) / sizeof(struct sc_perf_event))
 
-namespace {
-
-int init = 0;
-int running = 0;
-uint64_t total = 0;
-uint64_t start = 0;
-
 struct sc_perf_item sc_perf_items[ITEMS_SIZE];
 
 #define sc_perf_assert(val)                                                                                                                                                                  \
@@ -116,7 +112,7 @@ struct sc_perf_item sc_perf_items[ITEMS_SIZE];
 
 void sc_perf_set(struct sc_perf_item *items, size_t size) {
 	const uint64_t flags = PERF_FORMAT_TOTAL_TIME_ENABLED | PERF_FORMAT_TOTAL_TIME_RUNNING;
-	int fd;
+	int fd = 0;
 
 	for (size_t i = 0; i < size; i++) {
 		struct perf_event_attr p = {
@@ -146,7 +142,7 @@ void sc_read(struct sc_perf_item *items, size_t size) {
 		uint64_t value;
 		uint64_t time_enabled;
 		uint64_t time_running;
-	} fmt;
+	} fmt{};
 
 	for (size_t i = 0; i < size; i++) {
 		double n = 1.0;
@@ -161,11 +157,6 @@ void sc_read(struct sc_perf_item *items, size_t size) {
 }
 
 void sc_perf_clear() {
-	total = 0;
-	start = 0;
-	running = 0;
-	init = 0;
-
 	for (size_t i = 0; i < ITEMS_SIZE; i++) {
 		sc_perf_items[i].event = sc_perf_hw[i];
 		sc_perf_items[i].value = 0;
@@ -173,54 +164,27 @@ void sc_perf_clear() {
 	}
 }
 
-uint64_t sy_time_nano() {
-	int rc;
-	struct timespec ts;
-
-	rc = clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
-	if (rc == -1)
-		abort();
-
-	return ((uint64_t)(ts.tv_nsec + (ts.tv_sec * 1000 * 1000 * 1000)));
-}
-
 void print_perf_stat(const perf_stats &stat) {
-	printf("\n| %-25s | %-18s \n", stat.name, "Value");
-	printf("-----------------------------------------\n");
-	printf("| %-25s | %.2f ms\n", "time", stat.time);
+	lt::log("\n| %-25s", stat.name);
 
-	printf("| %-25s | %lu \n", "cpu_cycles", stat.cpu_cycles);
-	printf("| %-25s | %lu \n", "instructions", stat.instructions);
-	printf("| %-25s | %lu \n", "cache_misses", stat.cache_misses);
-	printf("| %-25s | %lu \n", "branch_misses", stat.branch_misses);
+	gcc_fmt_diagnostic_push lt::log("| %-25s | %.4f ms", "task_clock", stat.task_clock / 1000000.0);
+	lt::log("| %-25s | %$.2d", "cpu_cycles", stat.cpu_cycles);
+	lt::log("| %-25s | %$.2d", "instructions", stat.instructions);
+	lt::log("| %-25s | %$.2d", "cache_misses", stat.cache_misses);
+	lt::log("| %-25s | %$.2d", "branch_misses", stat.branch_misses);
+	gcc_fmt_diagnostic_pop
 }
 
 } // namespace
 
 void perf_start() {
-	if (!init) {
-		sc_perf_clear();
-		sc_perf_set(sc_perf_items, ITEMS_SIZE);
-		init = 1;
-	}
+	sc_perf_clear();
+	sc_perf_set(sc_perf_items, ITEMS_SIZE);
 
 	sc_perf_assert(prctl(PR_TASK_PERF_EVENTS_ENABLE) == 0);
-
-	start = sy_time_nano();
-	running = 1;
 }
 
-void perf_pause() {
-	sc_perf_assert(init);
-
-	if (!running)
-		return;
-
-	sc_perf_assert(prctl(PR_TASK_PERF_EVENTS_DISABLE) == 0);
-
-	total += sy_time_nano() - start;
-	running = 0;
-}
+void perf_pause() { sc_perf_assert(prctl(PR_TASK_PERF_EVENTS_DISABLE) == 0); }
 
 struct StatMap {
 	const char *name;
@@ -228,19 +192,16 @@ struct StatMap {
 };
 
 void perf_end(const char *p_test_name) {
-	sc_perf_assert(init);
-
 	perf_pause();
 	sc_read(sc_perf_items, ITEMS_SIZE);
 
 	for (const sc_perf_item &item : sc_perf_items)
 		close(item.fd);
 
-	perf_stats stats;
+	perf_stats stats{};
 	stats.name = p_test_name;
-	stats.time = (double)total / 1e6;
 
-	struct StatMap stat_map[] = { { "cpu-cycles", &stats.cpu_cycles }, { "instructions", &stats.instructions }, { "cache-misses", &stats.cache_misses },
+	struct StatMap stat_map[] = { { "task-clock", &stats.task_clock }, { "cpu-cycles", &stats.cpu_cycles }, { "instructions", &stats.instructions }, { "cache-misses", &stats.cache_misses },
 		{ "branch-misses", &stats.branch_misses } };
 
 	for (const sc_perf_item &item : sc_perf_items) {
@@ -263,7 +224,5 @@ void perf_end(const char *p_test_name) {
 void perf_start() {}
 void perf_pause() {}
 void perf_end(const char *p_test_name) {}
-lt::span<perf_stats> get_perf_stats() { return {}; }
-void print_perf_stats() {}
 
 #endif

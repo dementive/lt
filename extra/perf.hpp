@@ -8,7 +8,8 @@ void perf_end(const char *p_test_name);
 
 struct perf_stats {
 	const char *name;
-	double time;
+
+	unsigned long task_clock;
 	unsigned long cpu_cycles;
 	unsigned long instructions;
 	unsigned long cache_misses;
@@ -17,9 +18,6 @@ struct perf_stats {
 
 #define perf_scope(m_test_name)                                                                                                                                                              \
 	perf_start();                                                                                                                                                                            \
-	auto _ = lt::defer([] {                                                                                                                                                                  \
-		const char *perf_test_name_ = m_test_name;                                                                                                                                           \
-		perf_end(perf_test_name_);                                                                                                                                                           \
-	});
+	auto _ = lt::defer([](const char *perf_test_name_ = m_test_name) { perf_end(perf_test_name_); });
 
 #define perf_func perf_scope(__FUNCTION__)
