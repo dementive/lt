@@ -49,18 +49,8 @@ Lightweight templates for C++ 23.
 
 - Compiles cleanly with `-Wall -Wextra -Wpedantic -Wshadow` and all sanitizers.
 
-## Extras
-
-In the `extras` directory there are some other useful utilities that are built using some things from lt.
-
-- `perf.hpp` - Uses `defer` to profile the current scope using linux perf. You can call the perf_scope("name") macro to profile the current scope or just put `perf_func` at the top of any function to profile it. You can then use `get_perf_stats()` to get a view into everything you've profiled so far with these macros or use `print_perf_stats()` to print out all stats rerecorded by perf. Reworked from https://github.com/tezc/sc/tree/master/perf and adapted to C++.
-
-- `log.hpp` - https://github.com/tezc/sc/tree/master/logger adapted to C++.
-
 ## Credits
 
 The tuple and list were adapted from the Tuple and SelfList from [Godot](https://github.com/godotengine/godot/tree/master/core/templates).
-
-Perf and logging utilities were adapted from [sc](https://github.com/tezc/sc)
 
 snprintf from [stb](https://github.com/nothings/stb/blob/master/stb_sprintf.h)
