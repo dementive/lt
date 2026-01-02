@@ -16,7 +16,7 @@
 #define lt_assert_null(m_cond) lt_impl_assert(m_cond != nullptr, #m_cond " is null")
 #define lt_assert_msg(m_cond, m_msg) lt_impl_assert(m_cond, m_msg)
 
-#if defined(_MSC_VER)
+#ifdef _MSC_VER
 #define lt_crash() __fastfail(7)
 #elif defined(__i386__) || defined(__x86_64__)
 #define lt_crash() __asm__ volatile("ud2");
@@ -33,3 +33,7 @@
 #else
 #define lt_crash() __builtin_trap();
 #endif
+
+inline void lt_abort() {
+    lt_crash();
+}
